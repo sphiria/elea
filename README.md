@@ -1,6 +1,5 @@
 # elea
-
-## the whole gbf.wiki stack
+## gbf.wiki k8s configuration
 
 ## deploy steps
 

@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yuisis
+  labels:
+    app: nginx
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: yuisis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yuisis
+    spec:
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
+      containers:
+      - name: yuisis
+        image: ghcr.io/sphiria/yuisis:4a40638d9c2e817e6a4f1ddff5ac136dd5ed9dac
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "2Gi"
+        ports:
+          - containerPort: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 20"]
+        env:
+        - name: MEDIAWIKI_NAME
+          value: Granblue Fantasy Relink Wiki
+        - name: MEDIAWIKI_META_NAMESPACE
+          value: Granblue_Fantasy_Relink_Wiki
+        - name: MEDIAWIKI_LOGO
+          value: https://cdn.gbf.wiki/relink/Logo.png
+        - name: MEDIAWIKI_FAVICON
+          value: https://cdn.gbf.wiki/favicon.ico
+        - name: MEDIAWIKI_SERVER
+          value: //relink.gbf.wiki
+        - name: MEDIAWIKI_DB_TYPE
+          value: mysql
+        - name: MEDIAWIKI_DB_SERVER
+          value: 10.1.0.1
+        - name: MEDIAWIKI_DB_NAME
+          value: mediawiki
+        - name: MEDIAWIKI_DB_USER
+          value: mediawiki
+        - name: MEDIAWIKI_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: db-password
+        - name: MEDIAWIKI_SECRETKEY
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: secret-key
+        - name: MEDIAWIKI_AUTHTOKEN
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: auth-token
+        - name: REDIS_SERVER
+          value: korwa-service:6379
+        - name: AWS_S3_KEY
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: s3-key
+        - name: AWS_S3_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: s3-secret
+        - name: AWS_S3_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: s3-token
+        - name: CLOUDFLARE_ZONE_ID
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: cf-zone-id
+        - name: CLOUDFLARE_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: yuisis-secrets
+              key: cf-api-token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yuisis-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    targetPort: 8080
+    port: 8080
+  selector:
+    app: yuisis
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: relink-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: relink.gbf.wiki
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  yuisis-service
+                port:
+                  number: 8080

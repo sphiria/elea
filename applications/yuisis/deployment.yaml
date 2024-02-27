@@ -19,7 +19,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: yuisis
-        image: ghcr.io/sphiria/yuisis:4a40638d9c2e817e6a4f1ddff5ac136dd5ed9dac
+        image: ghcr.io/sphiria/yuisis:63bbafe450b5dee897dc5430a059a016f30c80c3
         imagePullPolicy: Always
         resources:
           requests:

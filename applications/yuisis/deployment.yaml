@@ -109,6 +109,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: relink-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 11m
 spec:
   ingressClassName: nginx
   rules:

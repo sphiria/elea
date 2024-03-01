@@ -44,7 +44,7 @@ spec:
         - name: MEDIAWIKI_DB_TYPE
           value: mysql
         - name: MEDIAWIKI_DB_SERVER
-          value: 10.1.0.1
+          value: 10.255.0.1
         - name: MEDIAWIKI_DB_NAME
           value: mediawiki
         - name: MEDIAWIKI_DB_USER

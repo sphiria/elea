@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: arulumaya-service
+spec:
+  type: ClusterIP
+  selector:
+    app: arulumaya
+  ports:
+    - protocol: TCP
+      port: 9200
+      targetPort: 9200
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arulumaya
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    matchLabels:
+      app: arulumaya
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: arulumaya
+    spec:
+      containers:
+      - name: arulumaya
+        image: elasticsearch-oss:7.10.2

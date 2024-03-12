@@ -29,4 +29,4 @@ spec:
     spec:
       containers:
       - name: arulumaya
-        image: elasticsearch-oss:7.10.2
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2-arm64

@@ -1,4 +1,14 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    product: k8s-elastic
+  name: elastic-config
+data:
+  elasticsearch.yaml: |
+    discovery.type: single-node
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: arulumaya-service
@@ -30,3 +40,7 @@ spec:
       containers:
       - name: arulumaya
         image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2-arm64
+        volumeMounts:
+          - name: elastic-config
+            mountPath: /etc/elasticsearch/elasticsearch.yaml
+            subPath: elasticsearch.yaml

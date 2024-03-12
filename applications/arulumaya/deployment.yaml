@@ -44,3 +44,7 @@ spec:
           - name: elastic-config
             mountPath: /etc/elasticsearch/elasticsearch.yaml
             subPath: elasticsearch.yaml
+      volumes:
+      - name: elastic-config
+        configMap:
+          name: elastic-config

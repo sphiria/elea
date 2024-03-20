@@ -83,7 +83,7 @@ data:
     );
 
     # Database settings
-    $wgDBssl = true;
+    $wgDBname = getenv('DB_NAME');
     $wgDBservers = [
         [
             'host' => getenv('DB_HOST'),

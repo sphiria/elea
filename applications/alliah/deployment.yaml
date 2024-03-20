@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alliah-service
+spec:
+  type: ClusterIP
+  selector:
+    app: alliah
+  ports:
+    - protocol: TCP
+      port: 11211
+      targetPort: 11211
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alliah
+  labels:
+    app: alliah
+spec:
+  selector:
+    matchLabels:
+      app: alliah
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: alliah
+    spec:
+      containers:
+      - name: alliah
+        image: memcached:1.6.24-alpine3.19

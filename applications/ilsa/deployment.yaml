@@ -549,7 +549,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: ilsa
-        image: ghcr.io/sphiria/yuisis:1aacee29c6eab8635a432a95a038bedde82c7a58
+        image: ghcr.io/sphiria/yuisis:3cb2b8500fafaa366f4e2cf6ad0f3d2ce070e2f2
         imagePullPolicy: Always
         resources:
           requests:

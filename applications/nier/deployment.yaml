@@ -577,7 +577,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:9f817d66ddc9bd0700b8b14c2ed1faddc02e062e
+        image: ghcr.io/sphiria/yuisis:3cb2b8500fafaa366f4e2cf6ad0f3d2ce070e2f2
         imagePullPolicy: Always
         resources:
           requests:

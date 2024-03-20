@@ -43,7 +43,7 @@ data:
     #$wgForceHTTPS = true;
 
     # logo
-    $wgLogo = "https://cdn.gbf.wiki/relink/Logo.png"
+    $wgLogo = "https://cdn.gbf.wiki/relink/Logo.png";
     $wgFavicon = "https://cdn.gbf.wiki/favicon.ico";
 
     # email - TODO: move to env

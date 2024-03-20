@@ -83,19 +83,11 @@ data:
     );
 
     # Database settings
+    $wgDBtype = "mysql";
+    $wgDBserver = getenv('DB_HOST');
     $wgDBname = getenv('DB_NAME');
-    $wgDBservers = [
-        [
-            'host' => getenv('DB_HOST'),
-            'dbname' => getenv('DB_NAME'),
-            'user' => getenv('DB_USERNAME'),
-            'password' => getenv('DB_PASSWORD'),
-            'type' => "mysql",
-            'flags' => DBO_DEFAULT,
-            'load' => 0,
-        ],
-    ];
-    $wgDBprefix = "";
+    $wgDBuser = getenv('DB_USERNAME');
+    $wgDBpassword = getenv('DB_PASSWORD');
     $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
     # Secret key

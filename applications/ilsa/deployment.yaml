@@ -63,19 +63,12 @@ data:
     $wgReferrerPolicy = array('strict-origin-when-cross-origin', 'strict-origin');
 
     # database
+    $wgDBtype = "mysql";
+    $wgDBserver = getenv('MEDIAWIKI_DB_SERVER');
     $wgDBname = getenv('MEDIAWIKI_DB_NAME');
-    $wgDBservers = [
-      [
-        'host' => getenv('MEDIAWIKI_DB_SERVER'),
-        'dbname' => getenv('MEDIAWIKI_DB_NAME'),
-        'user' => getenv('MEDIAWIKI_DB_USER'),
-        'password' => getenv('MEDIAWIKI_DB_PASSWORD'),
-        'type' => 'mysql',
-        'flags' => DBO_DEFAULT,
-        'load' => 0
-      ]
-    ];
-    $wgDBprefix = "";
+    $wgDBuser = getenv('MEDIAWIKI_DB_USER');
+    $wgDBpassword = getenv('MEDIAWIKI_DB_PASSWORD');
+    $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
     $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
     $wgSharedTables[] = "actor";
 

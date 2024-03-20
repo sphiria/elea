@@ -229,9 +229,6 @@ data:
       return true;
     };
 
-    # extensions
-    require_once "LocalSettings_extensions.php";
-
     # permissions
     # let editors editprotected and editinterface
     $wgGroupPermissions['editors']['editprotected'] = true;

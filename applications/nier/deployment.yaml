@@ -34,6 +34,7 @@ data:
     $wgMaxUploadSize = 10485760;
 
     # url
+    $wgServer = "//gbf.wiki";
     $wgScriptPath = "";
     $wgScriptExtension = "$wgScriptPath/index.php";
     $wgRedirectScript = "$wgScriptPath/redirect.php";
@@ -71,6 +72,7 @@ data:
     );
 
     # Database settings
+    $wgMiserMode = true;
     $wgDBtype = "mysql";
     $wgDBserver = getenv('DB_HOST');
     $wgDBname = getenv('DB_NAME');
@@ -114,12 +116,11 @@ data:
         'persistent' => true,
     ];
     $wgMainCacheType = 'redis';
-    $wgParserCacheType = 'redis';
+    $wgParserCacheType = CACHE_DB;
     $wgSessionCacheType = 'redis';
     $wgMainStash = 'redis';
     $wgEnableSidebarCache = true;
     $wgUseLocalMessageCache = true;
-    $wgCacheEpoch = 20190722104158;
     $wgInvalidateCacheOnLocalSettingsChange = false;
     $wgUseFileCache = false;
     $wgParserCacheExpireTime = 2592000;
@@ -137,7 +138,6 @@ data:
         'claimTTL' => 3600,
         'daemonized' => true
     ];
-
 
     # Disable creating account with api
     $wgAPIModules['createaccount'] = 'ApiDisabled';

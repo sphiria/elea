@@ -27,42 +27,30 @@ data:
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
     # assets
-    $wgLogo = $wgScriptPath . '/images/1/18/Vyrnball.png';
-    $wgFavicon = $wgScriptPath . '/images/favicon.ico';
+    $wgLogo = 'images/1/18/Vyrnball.png';
+    $wgFavicon = 'images/favicon.ico';
 
     # upload size
     $wgMaxUploadSize = 10485760;
 
-    $wgServer = "//gbf.wiki";
-    $wgMainPageIsDomainRoot = true;
+    # url
     $wgScriptPath = "";
-
-    # This makes very pretty urls, ie: article/edit
+    $wgScriptExtension = "$wgScriptPath/index.php";
+    $wgRedirectScript = "$wgScriptPath/redirect.php";
+    $wgUsePathInfo = true;
     $actions = array(
-        'edit',
-        'watch',
-        'unwatch',
-        'delete',
-        'revert',
-        'rollback',
-        'protect',
-        'unprotect',
-        'markpatrolled',
-        'render',
-        'submit',
-        'history',
-        'purge',
-        'info'
+      'edit', 'vedit', 'watch', 'unwatch', 'delete', 'revert', 'rollback',
+      'protect', 'unprotect', 'markpatrolled', 'render', 'submit', 'history', 'purge', 'info'
     );
     foreach ($actions as $action) {
-        $wgActionPaths[$action] = "/$1/$action";
+      $wgActionPaths[$action] = "/$1/$action";
     }
     $wgActionPaths['view'] = "/$1";
     $wgArticlePath = $wgActionPaths['view'];
-    $wgUsePathInfo = true;
-    $wgScriptExtension = ".php";
     $wgResourceBasePath = $wgScriptPath;
     $wgUrlProtocols = array('http://', 'https://', '//');
+    $wgMainPageIsDomainRoot = true;
+    $wgForceHTTPS = true;
 
     # Email
     $wgEnableEmail = true;

@@ -40,7 +40,7 @@ data:
     $wgResourceBasePath = $wgScriptPath;
     $wgUrlProtocols = array('http://', 'https://', '//');
     $wgMainPageIsDomainRoot = true;
-    #$wgForceHTTPS = true;
+    $wgForceHTTPS = true;
 
     # logo
     $wgLogo = "https://cdn.gbf.wiki/relink/Logo.png";

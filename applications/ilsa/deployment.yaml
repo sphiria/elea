@@ -560,6 +560,9 @@ spec:
           - name: ilsa-config-volume
             mountPath: /var/www/html/LocalSettings.php
             subPath: LocalSettings.php
+          - name: ilsa-jobrunner-volume
+            mountPath: /etc/jobrunner/jobrunner.json
+            subPath: jobrunner.json
         lifecycle:
           preStop:
             exec:
@@ -624,6 +627,9 @@ spec:
       - name: ilsa-config-volume
         configMap:
           name: ilsa-config
+      - name: ilsa-jobrunner-volume
+        configMap:
+          name: jobrunner-config
 ---
 apiVersion: v1
 kind: Service

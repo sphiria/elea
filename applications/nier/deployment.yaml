@@ -592,6 +592,9 @@ spec:
           - name: nier-config-volume
             mountPath: /var/www/html/LocalSettings.php
             subPath: LocalSettings.php
+          - name: nier-jobrunner-volume
+            mountPath: /etc/jobrunner/jobrunner.json
+            subPath: jobrunner.json
           - name: nier-images-pv
             mountPath: /var/www/html/images
         env:
@@ -667,6 +670,9 @@ spec:
       - name: nier-images-pv
         persistentVolumeClaim:
           claimName: nier-images-pv-claim
+      - name: nier-jobrunner-volume
+        configMap:
+          name: jobrunner-config
 ---
 apiVersion: v1
 kind: Service

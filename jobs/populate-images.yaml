@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: populate-images
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+      - name: nier-images-pv
+        persistentVolumeClaim:
+          claimName: nier-images-pv-claim
+      containers:
+        - name: populate-images-job
+          image: instrumentisto/rsync-ssh:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: nier-images-pv
+              mountPath: "/images"
+          env:
+          - name: SSHPASS
+            valueFrom:
+              secretKeyRef:
+                name: nier-secrets
+                key: sturm-password
+          command: ["sh",  "-c", "sshpass -e rsync -avzh -e 'ssh -o StrictHostKeyChecking=no -p 22' root@78.46.178.240:/srv/gbf.wiki/mediawiki/images/ /images", ""]

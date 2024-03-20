@@ -1,0 +1,707 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nier-images-pv-claim
+  labels:
+    app: nier
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50G
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nier-config
+data: 
+  config : |
+    <?php
+    # Protect against web entry
+    if (!defined('MEDIAWIKI')) {
+        exit;
+    }
+
+    $wgSitename = "Granblue Fantasy Wiki";
+    $wgMetaNamespace = "Granblue_Fantasy_Wiki";
+
+    # assets
+    $wgLogo = $wgScriptPath . '/images/1/18/Vyrnball.png';
+    $wgFavicon = $wgScriptPath . '/images/favicon.ico';
+
+    # upload size
+    $wgMaxUploadSize = 10485760;
+
+    $wgServer = "//gbf.wiki";
+    $wgMainPageIsDomainRoot = true;
+    $wgScriptPath = "";
+
+    # This makes very pretty urls, ie: article/edit
+    $actions = array(
+        'edit',
+        'watch',
+        'unwatch',
+        'delete',
+        'revert',
+        'rollback',
+        'protect',
+        'unprotect',
+        'markpatrolled',
+        'render',
+        'submit',
+        'history',
+        'purge',
+        'info'
+    );
+    foreach ($actions as $action) {
+        $wgActionPaths[$action] = "/$1/$action";
+    }
+    $wgActionPaths['view'] = "/$1";
+    $wgArticlePath = $wgActionPaths['view'];
+    $wgUsePathInfo = true;
+    $wgScriptExtension = ".php";
+    $wgResourceBasePath = $wgScriptPath;
+    $wgUrlProtocols = array('http://', 'https://', '//');
+
+    # Email
+    $wgEnableEmail = true;
+    $wgEnableUserEmail = false; # UPO
+    $wgEmergencyContact = getenv('EMAIL');
+    $wgPasswordSender = getenv('EMAIL');
+    $wgEnotifUserTalk = false; # UPO
+    $wgEnotifWatchlist = false; # UPO
+    $wgEmailAuthentication = true;
+    $wgSMTP = array(
+        'host' => 'ssl://smtp.gmail.com',
+        'IDHost' => 'gbf.wiki',
+        'localhost' => 'gbf.wiki',
+        'port' => 465,
+        'username' => getenv('EMAIL'),
+        'password' => getenv('EMAIL_PASSWORD'),
+        'auth' => true
+    );
+
+    # Database settings
+    $wgDBssl = true;
+    $wgDBservers = [
+        [
+            'host' => getenv('DB_HOST'),
+            'dbname' => getenv('DB_NAME'),
+            'user' => getenv('DB_USERNAME'),
+            'password' => getenv('DB_PASSWORD'),
+            'type' => "mysql",
+            'flags' => DBO_DEFAULT,
+            'load' => 0,
+        ],
+    ];
+    $wgDBprefix = "";
+    $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+
+    # Secret key
+    $wgSecretKey = getenv('MW_SECRET_KEY');
+
+    # Changing this will log out all existing sessions.
+    $wgAuthenticationTokenVersion = "1";
+
+    # determines how section IDs should be encoded. 
+    $wgFragmentMode = ['html5'];
+
+    # Images
+    $wgEnableUploads = true;
+    $wgUseImageMagick = true;
+    $wgImageMagickConvertCommand = "/usr/bin/convert";
+    $wgShellLocale = "en_US.utf8";
+    $wgUseInstantCommons = false;
+    $wgSharpenParameter = "0x0.5";
+    $wgIgnoreImageErrors = true;
+    $wgMaxImageArea = 10e7;
+    $wgMaxShellFileSize = 402400;
+    $wgMaxShellMemory = 607200;
+
+    # Remove export page
+    function removeExportSpecial(&$aSpecialPages)
+    {
+        unset($aSpecialPages['Export']);
+        return true;
+    }
+    $wgHooks['SpecialPage_initList'][] = 'removeExportSpecial';
+
+    # cache
+    $wgObjectCaches['redis'] = [
+        'class' => 'RedisBagOStuff',
+        'servers' => [ getenv('REDIS_HOST') ],
+        'persistent' => true,
+    ];
+    $wgMainCacheType = 'redis';
+    $wgParserCacheType = 'redis';
+    $wgSessionCacheType = 'redis';
+    $wgMainStash = 'redis';
+    $wgEnableSidebarCache = true;
+    $wgUseLocalMessageCache = true;
+    $wgCacheEpoch = 20190722104158;
+    $wgInvalidateCacheOnLocalSettingsChange = false;
+    $wgUseFileCache = false;
+    $wgParserCacheExpireTime = 2592000;
+    $wgObjectCacheSessionExpiry = 3600 * 3;
+
+    # disable job queue and use redis
+    $wgJobRunRate = 0;
+    $wgJobTypeConf['default'] = [
+        'class' => 'JobQueueRedis',
+        'redisServer' => getenv('REDIS_HOST'),
+        'redisConfig' => [
+            'connectTimeout' => 2,
+            'compression' => 'gzip',
+        ],
+        'claimTTL' => 3600,
+        'daemonized' => true
+    ];
+
+
+    # Disable creating account with api
+    $wgAPIModules['createaccount'] = 'ApiDisabled';
+
+    # Cloudflare
+    $wgUseCdn = true;
+    $wgUsePrivateIPs = true;
+    $wgCdnServersNoPurge = [
+        '173.245.48.0/20',
+        '103.21.244.0/22',
+        '103.22.200.0/22',
+        '103.31.4.0/22',
+        '141.101.64.0/18',
+        '108.162.192.0/18',
+        '190.93.240.0/20',
+        '188.114.96.0/20',
+        '197.234.240.0/22',
+        '198.41.128.0/17',
+        '162.158.0.0/15',
+        '104.16.0.0/13',
+        '104.24.0.0/14',
+        '172.64.0.0/13',
+        '131.0.72.0/22',
+    ];
+
+    # locale
+    $wgLanguageCode = "en";
+    $wgLocaltimezone = 'UTC';
+
+    # License
+    $wgRightsPage = ""; # Set to the title of a wiki page that describes your license/copyright
+    $wgRightsUrl = "https://creativecommons.org/licenses/by-nc-sa/4.0/";
+    $wgRightsText = "Creative Commons Attribution-NonCommercial-ShareAlike";
+    $wgRightsIcon = "$wgResourceBasePath/resources/assets/licenses/cc-by-nc-sa.png";
+
+    # Path to the GNU diff3 utility. Used for conflict resolution.
+    $wgDiff3 = "/usr/bin/diff3";
+
+    # Default skin
+    $wgDefaultSkin = "vector";
+    wfLoadSkin('Vector');
+    wfLoadSkin('Timeless');
+
+    # Article size
+    $wgMaxArticleSize = 8192;
+
+    # Extensions
+    wfLoadExtension('Cite');
+    wfLoadExtension('Gadgets');
+    wfLoadExtension('ImageMap');
+    wfLoadExtension('InputBox');
+    wfLoadExtension('Interwiki');
+    $wgGroupPermissions['sysop']['interwiki'] = true;
+    wfLoadExtension('Nuke');
+    wfLoadExtension('ParserFunctions');
+    # enable string functions
+    $wgPFEnableStringFunctions = true;
+    wfLoadExtension('Poem');
+    wfLoadExtension('SpamBlacklist');
+    wfLoadExtension('MultimediaViewer');
+    wfLoadExtension('TitleBlacklist');
+    # CodeEditor
+    wfLoadExtension('WikiEditor');
+    wfLoadExtension('CodeEditor');
+    wfLoadExtension('SyntaxHighlight_GeSHi');
+    wfLoadExtension('CodeMirror');
+    $wgDefaultUserOptions['usecodemirror'] = true;
+
+    wfLoadExtension('VipsScaler');
+
+    # Captcha
+    wfLoadExtensions(['ConfirmEdit', 'ConfirmEdit/QuestyCaptcha']);
+    $wgCaptchaClass = 'QuestyCaptcha';
+    $arr = array(
+        "What's the female main character called? D__e_a" => array('Djeeta', 'DJEETA', 'gita'),
+    );
+    foreach ($arr as $key => $value) {
+        $wgCaptchaQuestions[] = array('question' => $key, 'answer' => $value);
+    }
+    $wgGroupPermissions['bot']['skipcaptcha'] = true; // registered bots
+    $wgGroupPermissions['sysop']['skipcaptcha'] = true;
+    $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
+    $wgGroupPermissions['verified']['skipcaptcha'] = true;
+    $wgCaptchaTriggersOnNamespace['NS_TALK']['createtalk'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TALK']['edit'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TALK']['create'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TALK']['addurl'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TOPIC']['edit'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TOPIC']['create'] = false;
+    $wgCaptchaTriggersOnNamespace['NS_TOPIC']['addurl'] = false;
+    $wgCaptchaTriggers['edit'] = true;
+    $wgCaptchaTriggers['create'] = true;
+    $wgCaptchaTriggers['createtalk'] = true;
+    $wgCaptchaTriggers['addurl'] = true;
+    $wgCaptchaTriggers['createaccount'] = true;
+    $wgCaptchaTriggers['badlogin'] = true;
+    $ceAllowConfirmedEmail = true;
+
+    # ImportArticles
+    wfLoadExtension('ImportArticles');
+
+    # ParserFunction
+    $wgPFStringLengthLimit = 5000;
+
+    # Variables
+    wfLoadExtension('Variables');
+
+    # Loops
+    wfLoadExtension('Loops');
+
+    # DynamicPageList
+    wfLoadExtension("DynamicPageList3");
+    $wgDplSettings['maxResultCount'] = 1000;
+
+    # TabberNeue
+    wfLoadExtension('TabberNeue');
+
+    # Purge
+    $wgGroupPermissions['user']['purge'] = false;
+    $wgGroupPermissions['sysop']['purge'] = true;
+
+    # MsUpload
+    wfLoadExtension('MsUpload');
+    $wgEnableUploads = true;
+    $wgAllowJavaUploads = true;
+    $wgFileExtensions = array('png', 'gif', 'jpg', 'jpeg', 'mp3', 'svg', 'webp');
+    $wgGroupPermissions['user']['upload'] = true;
+    $wgEnableWriteAPI = true;
+    $wgMSU_useDragDrop = true;
+    $wgMSU_showAutoCat = true;
+    $wgMSU_checkAutoCat = true;
+    $wgMSU_useMsLinks = false;
+    $wgMSU_confirmReplace = true;
+    $wgMSU_imgParams = '400px';
+
+    # arrays
+    wfLoadExtension('Arrays');
+
+    $wgAllowUserCss = true;
+    $wgAllowUserJs = true;
+
+    # Scribunto LUA
+    wfLoadExtension('Scribunto');
+    $wgScribuntoDefaultEngine = 'luasandbox';
+    $wgScribuntoEngineConf['luasandbox']['errorFile'] = '/var/log/luasandbox.log';
+    $wgScribuntoUseCodeEditor = true;
+    $wgScribuntoUseGeSHi = true;
+    # VariablesLua
+    wfLoadExtension('VariablesLua');
+
+    # template sandbox
+    wfLoadExtension('TemplateSandbox');
+
+    // Define constants for additional namespaces.
+    define("NS_RAIDS", 3000);
+    define("NS_RAIDS_TALK", 3001);
+    define("NS_META", 4000);
+    define("NS_META_TALK", 4001);
+    define("NS_SCENARIO", 5000);
+    define("NS_SCENARIO_TALK", 5001);
+    define("NS_NEWS", 6000);
+    define("NS_NEWS_TALK", 6001);
+    define("NS_ENEMIES", 7000);
+    define("NS_ENEMIES_TALK", 7001);
+    define("NS_SKILLS", 8000);
+    define("NS_SKILLS_TALK", 8001);
+    define("NS_TROPHIES", 9000);
+    define("NS_TROPHIES_TALK", 9001);
+    define("NS_DATA", 10000);
+    define("NS_DATA_TALK", 10001);
+
+    // Add namespaces.
+    $wgExtraNamespaces[NS_RAIDS] = "Raids";
+    $wgExtraNamespaces[NS_RAIDS_TALK] = "Raids_talk";
+    $wgExtraNamespaces[NS_META] = "Meta";
+    $wgExtraNamespaces[NS_META_TALK] = "Meta_talk";
+    $wgExtraNamespaces[NS_SCENARIO] = "Scenario";
+    $wgExtraNamespaces[NS_SCENARIO_TALK] = "Scenario_talk";
+    $wgExtraNamespaces[NS_NEWS] = "News";
+    $wgExtraNamespaces[NS_NEWS_TALK] = "News_talk";
+    $wgExtraNamespaces[NS_ENEMIES] = "Enemies";
+    $wgExtraNamespaces[NS_ENEMIES_TALK] = "Enemies_talk";
+    $wgExtraNamespaces[NS_SKILLS] = "Skills";
+    $wgExtraNamespaces[NS_SKILLS_TALK] = "Skills_talk";
+    $wgExtraNamespaces[NS_TROPHIES] = "Trophies";
+    $wgExtraNamespaces[NS_TROPHIES_TALK] = "Trophies_talk";
+    $wgExtraNamespaces[NS_DATA] = "Data";
+    $wgExtraNamespaces[NS_DATA_TALK] = "Data_talk";
+
+    # Enable subpages in other namespaces
+    $wgNamespacesWithSubpages[NS_META] = true;
+
+    # better descriptions
+    wfLoadExtension('WikiSEO');
+
+    # CheckUser
+    wfLoadExtension('CheckUser');
+    $wgGroupPermissions['sysop']['checkuser'] = true;
+    $wgGroupPermissions['sysop']['checkuser-log'] = true;
+    $wgGroupPermissions['sysop']['hideuser'] = true;
+
+    // Widgets
+    wfLoadExtension('Widgets');
+
+    // CLDR
+    wfLoadExtension('cldr');
+
+    # Linter
+    wfLoadExtension('Linter');
+
+    # discussion tools
+    wfLoadExtension('DiscussionTools');
+
+    # echo
+    wfLoadExtension('Echo');
+
+    # DynamicPageList3
+    wfLoadExtension('DynamicPageList3');
+
+    # Labeled Section Transclusion
+    wfLoadExtension('LabeledSectionTransclusion');
+
+    # DeletepagesFFS
+    wfLoadExtension('DeletePagesForGood');
+    $wgGroupPermissions['*']['deleteperm'] = false;
+    $wgGroupPermissions['user']['deleteperm'] = false;
+    $wgGroupPermissions['bureaucrat']['deleteperm'] = false;
+    $wgGroupPermissions['sysop']['deleteperm'] = true;
+    $wgDeletePagesForGoodNamespaces = array(
+        'NS_MAIN' => true,
+        'NS_IMAGE' => true,
+        'NS_IMAGE_TALK' => true,
+        'NS_CATEGORY' => true,
+        'NS_CATEGORY_TALK' => true,
+        'NS_TEMPLATE' => true,
+        'NS_TEMPLATE_TALK' => true,
+        'NS_TALK' => true,
+        'NS_USER' => true,
+        'NS_USER_TALK' => true,
+        'NS_FILE' => true,
+        'NS_FILE_TALK' => true,
+        'NS_RAIDS' => true,
+        'NS_RAIDS_TALK' => true,
+        'NS_META' => true,
+        'NS_META_TALK' => true,
+        'NS_SCENARIO' => true,
+        'NS_SCENARIO_TALK' => true,
+        'NS_TOPIC' => true,
+        'NS_NEWS' => true,
+        'NS_NEWS_TALK' => true,
+        'NS_WIDGET' => true,
+        'NS_TROPHIES' => true,
+    );
+
+    # cargo
+    wfLoadExtension('Cargo');
+    $wgCargoDBname = getenv('DB_CARGO_NAME');
+    $wgCargoPageDataColumns[] = 'categories';
+    $wgCargoPageDataColumns[] = 'creationDate';
+    $wgCargoPageDataColumns[] = 'modificationDate';
+    $wgCargoPageDataColumns[] = 'creator';
+    $wgCargoPageDataColumns[] = 'numRevisions';
+    $wgCargoPageDataColumns[] = 'isRedirect';
+    $wgCargoPageDataColumns[] = 'pageNameOrRedirect';
+    $wgCargoAllowedSQLFunctions[] = 'REPEAT';
+    $wgCargoAllowedSQLFunctions[] = 'REPLACE';
+    $wgCargoAllowedSQLFunctions[] = 'REGEX_REPLACE';
+    $wgCargoAllowedSQLFunctions[] = 'REGEX_SUBSTR';
+    $wgCargoAllowedSQLFunctions[] = 'TRIM';
+    $wgCargoAllowedSQLFunctions[] = 'IN';
+    $wgCargoAllowedSQLFunctions[] = 'GROUP_CONCAT';
+    $wgCargoAllowedSQLFunctions[] = 'FIND_IN_SET';
+    $wgCargoAllowedSQLFunctions[] = 'IF';
+    $wgCargoAllowedSQLFunctions[] = 'IFNULL';
+    $wgCargoAllowedSQLFunctions[] = 'ANY_VALUE';
+    $wgCargoAllowedSQLFunctions[] = 'LENGTH';
+
+    # SimpleMathJax
+    wfLoadExtension('SimpleMathJax');
+
+    # VisualEditor
+    wfLoadExtension('VisualEditor');
+    # $wgDefaultUserOptions['visualeditor-enable'] = 1;
+    # $wgDefaultUserOptions['visualeditor-editor'] = "visualeditor";
+    # $wgHiddenPrefs[] = 'visualeditor-enable';
+    $wgParsoidSettings = [
+        'linting' => true
+    ];
+
+    # TemplateData
+    wfLoadExtension('TemplateData');
+
+    # ElasticSearch
+    wfLoadExtension('Elastica');
+    wfLoadExtension('CirrusSearch');
+    $wgSearchType = 'CirrusSearch';
+    #$wgDisableSearchUpdate = true;
+    $wgCirrusSearchServers = [ getenv('ES_HOST') ];
+    $wgCirrusSearchUseCompletionSuggester = 'yes';
+    $wgCirrusSearchUseExperimentalHighlighter = true;
+    $wgCirrusSearchOptimizeIndexForExperimentalHighlighter = true;
+    $wgCirrusSearchAllowLeadingWildcard = false;
+    $wgCirrusSearchUseIcuFolding = true;
+    $wgCirrusSearchWikimediaExtraPlugin['id_hash_mod_filter'] = true;
+    $wgCirrusSearchWikimediaExtraPlugin['super_detect_noop'] = true;
+
+    # CollapsibleVector
+    wfLoadExtension('CollapsibleVector');
+
+    # EmbedVideo
+    wfLoadExtension("EmbedVideo");
+
+
+    # discord notifications
+    wfLoadExtension('Discord');
+    $wgDiscordWebhookURL = [ getenv('DISCORD_WEBHOOK') ];
+    $wgDiscordDisabledHooks = ["ArticleDeleteComplete", "ArticleUndelete", "ArticleRevisionVisibilitySet", "ArticleProtectComplete", "BlockIpComplete", "UnblockUserComplete", "UserGroupsChanged", "FileDeleteComplete", "FileUndeleteComplete", "AfterImportPage", "ArticleMergeComplete"];
+
+    # templatestyles
+    wfLoadExtension('TemplateStyles');
+
+    # cloudflare
+    wfLoadExtension('MultiPurge');
+    $wgMultiPurgeCloudFlareZoneId = getenv('CLOUDFLARE_ZONE_ID');
+    $wgMultiPurgeCloudFlareApiToken = getenv('CLOUDFLARE_API_TOKEN');
+    $wgMultiPurgeEnabledServices = ['cloudflare'];
+    $wgMultiPurgeServiceOrder = ['cloudflare'];
+
+    # Flow
+    wfLoadExtension('Flow');
+    $wgNamespaceContentModels[NS_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_USER_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_RAIDS_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_META_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_SCENARIO_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_NEWS_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_ENEMIES_TALK] = 'flow-board';
+    $wgNamespaceContentModels[NS_SKILLS_TALK] = 'flow-board';
+    $wgNamespacesWithSubpages[3001] = true;
+    $wgNamespacesWithSubpages[4001] = true;
+    $wgNamespacesWithSubpages[5001] = true;
+    $wgNamespacesWithSubpages[6001] = true;
+    $wgNamespacesWithSubpages[7001] = true;
+    $wgNamespacesWithSubpages[8001] = true;
+    $wgGroupPermissions['sysop']['flow-create-board'] = true;
+    #$wgExtraNamespaces[2600] = 'Topic';
+    #$wgContentHandlers["flow-board"] = $wgContentHandlers["wikitext"];
+
+    // permissions
+    $wgGroupPermissions['editors']['editprotected'] = true;
+    $wgGroupPermissions['editors']['editinterface'] = true;
+    $wgGroupPermissions['sysop']['deletelogentry'] = true;
+    $wgGroupPermissions['sysop']['deleterevision'] = true;
+    $wgGroupPermissions['anime']['editsemiprotected'] = true;
+    # disable edit with api unless you're confirmed
+    # let's not auto confirm way too early
+    $wgAutoConfirmAge = 600;
+    $wgAutoConfirmCount = 0;
+    # let's revoke create page for user and guest
+    $wgGroupPermissions['*']['edit'] = false;
+    $wgGroupPermissions['*']['createpage'] = false;
+    $wgGroupPermissions['*']['createtalk'] = false;
+    $wgGroupPermissions['*']['move'] = false;
+    $wgGroupPermissions['*']['reupload'] = false;
+    $wgGroupPermissions['*']['upload'] = false;
+    $wgGroupPermissions['user']['createpage'] = false;
+    $wgGroupPermissions['user']['createtalk'] = false;
+    $wgGroupPermissions['user']['writeapi'] = false;
+    $wgGroupPermissions['user']['move'] = false;
+    $wgGroupPermissions['user']['reupload'] = false;
+    $wgGroupPermissions['user']['upload'] = false;
+    # autoconfirmed is allowed to create pages
+    $wgGroupPermissions['autoconfirmed']['createpage'] = true;
+    $wgGroupPermissions['autoconfirmed']['createtalk'] = true;
+    $wgGroupPermissions['autoconfirmed']['writeapi'] = true;
+    $wgGroupPermissions['autoconfirmed']['move'] = true;
+    $wgGroupPermissions['autoconfirmed']['reupload'] = true;
+    $wgGroupPermissions['autoconfirmed']['upload'] = true;
+    $wgGroupPermissions['patrollers']['patrol'] = true;
+    $wgGroupPermissions['patrollers']['autopatrol'] = true;
+    $wgGroupPermissions['sysop']['upload_by_url'] = true;
+    $wgGroupPermissions['sysop']['deletelogentry'] = true;
+    $wgGroupPermissions['sysop']['deleterevision'] = true;
+    $wgGroupPermissions['autopatrolled']['autopatrol'] = true;
+
+
+    // Groups from MediaWiki core
+    $wgDBerrorLog = '/var/log/mediawiki/dberror.log';
+    $wgRateLimitLog = '/var/log/mediawiki/ratelimit.log';
+    $wgDebugLogGroups = array(
+        'resourceloader' => '/var/log/mediawiki/resourceloader.log',
+        'exception' => '/var/log/mediawiki/exception.log',
+        'error' => '/var/log/mediawiki/error.log',
+        'cargo' => '/var/log/mediawiki/cargo.log',
+    );
+
+    wfLoadExtension( 'DarkMode' );
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nier
+  labels:
+    app: mediawiki
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nier
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nier
+    spec:
+      imagePullSecrets:
+      - name: dockerconfigjson-github-com
+      containers:
+      - name: nier
+        image: ghcr.io/sphiria/yuisis:1e7c2b1a752431f986e5614fe0d2aed22893323a
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "10Gi"
+        ports:
+          - containerPort: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sh", "-c", "sleep 20"]
+        volumeMounts:
+          - name: nier-config-volume
+            mountPath: /var/www/html/LocalSettings.php
+            subPath: LocalSettings.php
+          - name: nier-images-pv
+            mountPath: /var/www/html/images
+        env:
+        - name: EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: email
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: email-password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: db-name
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: db-host
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: db-username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: db-password
+        - name: DB_CARGO_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: db-cargo-name
+        - name: MW_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: mw-secret-key
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: redis-host
+        - name: ES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: es-host
+        - name: DISCORD_WEBHOOK
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: discord-webhook
+        - name: CLOUDFLARE_ZONE_ID
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: cloudflare-zone-id
+        - name: CLOUDFLARE_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: cloudflare-api-token
+      volumes:
+      - name: nier-config-volume
+        configMap:
+          name: nier-config
+      - name: nier-images-pv
+        persistentVolumeClaim:
+          claimName: nier-images-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nier-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    targetPort: 8080
+    port: 8080
+  selector:
+    app: nier
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gbfwiki-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 11m
+    nginx.ingress.kubernetes.io/forwarded-for-header: "CF-Connecting-IP"
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/compute-full-forwarded-for: "true"
+    nginx.ingress.kubernetes.io/enable-real-ip: "true"
+    nginx.ingress.kubernetes.io/proxy-real-ip-cidr: "10.0.0.0/8,173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22,2400:cb00::/32,2606:4700::/32,2803:f800::/32,2405:b500::/32,2405:8100::/32,2a06:98c0::/29,2c0f:f248::/32"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: gbf.wiki
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  nier-service
+                port:
+                  number: 8080

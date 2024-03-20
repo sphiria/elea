@@ -1,12 +1,15 @@
 apiVersion: v1
-kind: ConfigMap
+kind: PersistentVolumeClaim
 metadata:
+  name: arulumaya-pv-claim
   labels:
-    product: k8s-elastic
-  name: elastic-config
-data:
-  elasticsearch.yaml: |
-    discovery.type: single-node
+    app: arulumaya
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5G
 ---
 apiVersion: v1
 kind: Service
@@ -26,7 +29,7 @@ kind: Deployment
 metadata:
   name: arulumaya
   labels:
-    app: elasticsearch
+    app: arulumaya
 spec:
   selector:
     matchLabels:
@@ -38,13 +41,15 @@ spec:
         app: arulumaya
     spec:
       containers:
-      - name: arulumaya
-        image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2-arm64
-        volumeMounts:
-          - name: elastic-config
-            mountPath: /etc/elasticsearch/elasticsearch.yaml
-            subPath: elasticsearch.yaml
+        - name: arulumaya
+          image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2-arm64
+          env:
+            - name: discovery.type
+              value: single-node
+          volumeMounts:
+            - name: arulumaya-pv
+              mountPath: /var/lib/elasticsearch/data
       volumes:
-      - name: elastic-config
-        configMap:
-          name: elastic-config
+        - name: arulumaya-pv
+          persistentVolumeClaim:
+            claimName: arulumaya-pv-claim

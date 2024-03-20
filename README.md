@@ -34,3 +34,9 @@ kubectl -n kubernetes-dashboard create token admin-user
 ```
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
+
+### rollout restart 
+for configmap changes
+```
+kubectl rollout restart <deploymentName> -n <namespace> 
+```

@@ -534,7 +534,7 @@ data:
         'cargo' => '/var/log/mediawiki/cargo.log',
     );
 
-    wfLoadExtension( 'DarkMode' );
+    #wfLoadExtension( 'DarkMode' );
 ---
 apiVersion: apps/v1
 kind: Deployment

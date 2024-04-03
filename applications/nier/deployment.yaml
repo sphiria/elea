@@ -26,10 +26,6 @@ data:
     $wgSitename = "Granblue Fantasy Wiki";
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
-    # assets
-    $wgLogo = "$wgScriptPath/images/1/18/Vyrnball.png";
-    $wgFavicon = "$wgScriptPath/images/favicon.ico";
-
     # upload size
     $wgMaxUploadSize = 10485760;
 
@@ -52,6 +48,10 @@ data:
     $wgUrlProtocols = array('http://', 'https://', '//');
     $wgMainPageIsDomainRoot = true;
     $wgForceHTTPS = true;
+
+    # assets
+    $wgLogo = "$wgScriptPath/images/1/18/Vyrnball.png";
+    $wgFavicon = "$wgScriptPath/images/favicon.ico";
 
     # Email
     $wgEnableEmail = true;

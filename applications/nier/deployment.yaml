@@ -434,15 +434,15 @@ data:
     wfLoadExtension('Elastica');
     wfLoadExtension('CirrusSearch');
     #$wgSearchType = 'CirrusSearch';
-    $wgDisableSearchUpdate = true;
     $wgCirrusSearchServers = [ getenv('ES_HOST') ];
     $wgCirrusSearchUseCompletionSuggester = 'yes';
-    $wgCirrusSearchUseExperimentalHighlighter = true;
-    $wgCirrusSearchOptimizeIndexForExperimentalHighlighter = true;
-    $wgCirrusSearchAllowLeadingWildcard = false;
-    $wgCirrusSearchUseIcuFolding = true;
-    $wgCirrusSearchWikimediaExtraPlugin['id_hash_mod_filter'] = true;
-    $wgCirrusSearchWikimediaExtraPlugin['super_detect_noop'] = true;
+    $wgCirrusSearchCompletionSuggesterSubphrases = [
+        'build'  => true,
+        'use' => true,
+        'type' => 'anywords',
+        'limit' => 5,
+    ];
+    $wgDisableSearchUpdate = true;
 
     # CollapsibleVector
     wfLoadExtension('CollapsibleVector');

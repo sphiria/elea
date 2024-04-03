@@ -642,6 +642,13 @@ spec:
             secretKeyRef:
               name: nier-secrets
               key: cloudflare-api-token
+      initContainers:
+      - name: volume-mount-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images"]
+        volumeMounts:
+        - name: nier-images-pv
+          mountPath: /var/www/html/images
       volumes:
       - name: nier-config-volume
         configMap:

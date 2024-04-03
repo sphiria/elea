@@ -523,18 +523,7 @@ data:
     $wgGroupPermissions['sysop']['deleterevision'] = true;
     $wgGroupPermissions['autopatrolled']['autopatrol'] = true;
 
-
-    // Groups from MediaWiki core
-    $wgDBerrorLog = '/var/log/mediawiki/dberror.log';
-    $wgRateLimitLog = '/var/log/mediawiki/ratelimit.log';
-    $wgDebugLogGroups = array(
-        'resourceloader' => '/var/log/mediawiki/resourceloader.log',
-        'exception' => '/var/log/mediawiki/exception.log',
-        'error' => '/var/log/mediawiki/error.log',
-        'cargo' => '/var/log/mediawiki/cargo.log',
-    );
-
-    #wfLoadExtension( 'DarkMode' );
+    wfLoadExtension( 'DarkMode' );
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -557,7 +546,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:3cb2b8500fafaa366f4e2cf6ad0f3d2ce070e2f2
+        image: ghcr.io/sphiria/yuisis:c84fc4c9ee1a59b746b1c630c409bc08ed334e06
         imagePullPolicy: Always
         resources:
           requests:

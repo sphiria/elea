@@ -433,8 +433,8 @@ data:
     # ElasticSearch
     wfLoadExtension('Elastica');
     wfLoadExtension('CirrusSearch');
-    $wgSearchType = 'CirrusSearch';
-    #$wgDisableSearchUpdate = true;
+    #$wgSearchType = 'CirrusSearch';
+    $wgDisableSearchUpdate = true;
     $wgCirrusSearchServers = [ getenv('ES_HOST') ];
     $wgCirrusSearchUseCompletionSuggester = 'yes';
     $wgCirrusSearchUseExperimentalHighlighter = true;
@@ -535,9 +535,6 @@ data:
     );
 
     wfLoadExtension( 'DarkMode' );
-    # need to kill Flow
-    $wgNamespaceContentModels[NS_TALK] = 'flow-board';
-    $wgNamespaceContentModels[NS_USER_TALK] = 'flow-board';
 ---
 apiVersion: apps/v1
 kind: Deployment

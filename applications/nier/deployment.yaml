@@ -27,8 +27,8 @@ data:
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
     # assets
-    $wgLogo = 'images/1/18/Vyrnball.png';
-    $wgFavicon = 'images/favicon.ico';
+    $wgLogo = "$wgScriptPath/images/1/18/Vyrnball.png";
+    $wgFavicon = "$wgScriptPath/images/favicon.ico";
 
     # upload size
     $wgMaxUploadSize = 10485760;

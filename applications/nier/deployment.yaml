@@ -247,6 +247,7 @@ data:
 
     # Loops
     wfLoadExtension('Loops');
+    $egLoopsCountLimit = 1000;
 
     # DynamicPageList
     wfLoadExtension("DynamicPageList3");

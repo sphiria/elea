@@ -349,7 +349,7 @@ data:
     wfLoadExtension('Linter');
 
     # discussion tools
-    # wfLoadExtension('DiscussionTools');
+    wfLoadExtension('DiscussionTools');
 
     # echo
     wfLoadExtension('Echo');

@@ -130,6 +130,8 @@ data:
     $wgJobRunRate = 0;
     $wgJobTypeConf['default'] = [
         'class' => 'JobQueueRedis',
+        'checkDelay' => true,
+        'order' => 'fifo',
         'redisServer' => getenv('REDIS_HOST'),
         'redisConfig' => [
             'connectTimeout' => 2,
@@ -547,7 +549,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:1a3e83c81ef4711bcfc18b980ed3ca6f4d6fb256
+        image: ghcr.io/sphiria/yuisis:686f0b21758141af4e5d8ff3902bbf0763517cde
         imagePullPolicy: Always
         resources:
           requests:

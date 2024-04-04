@@ -549,7 +549,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:686f0b21758141af4e5d8ff3902bbf0763517cde
+        image: ghcr.io/sphiria/yuisis:bdb6de869990ea196f5dcfa95e6b74ac6483164e
         imagePullPolicy: Always
         resources:
           requests:
@@ -564,9 +564,6 @@ spec:
           - name: nier-config-volume
             mountPath: /var/www/html/LocalSettings.php
             subPath: LocalSettings.php
-          - name: nier-jobrunner-volume
-            mountPath: /etc/jobrunner/jobrunner.json
-            subPath: jobrunner.json
           - name: nier-images-pv
             mountPath: /var/www/html/images
         env:
@@ -638,7 +635,7 @@ spec:
       initContainers:
       - name: volume-mount-permissions
         image: busybox
-        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images"]
+        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html"]
         volumeMounts:
         - name: nier-images-pv
           mountPath: /var/www/html/images
@@ -649,9 +646,6 @@ spec:
       - name: nier-images-pv
         persistentVolumeClaim:
           claimName: nier-images-pv-claim
-      - name: nier-jobrunner-volume
-        configMap:
-          name: jobrunner-config
 ---
 apiVersion: v1
 kind: Service

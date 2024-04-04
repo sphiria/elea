@@ -524,6 +524,7 @@ data:
     $wgGroupPermissions['autopatrolled']['autopatrol'] = true;
 
     wfLoadExtension( 'DarkMode' );
+    wfLoadExtension( 'RandomSelection' );
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -546,7 +547,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:c84fc4c9ee1a59b746b1c630c409bc08ed334e06
+        image: ghcr.io/sphiria/yuisis:1a3e83c81ef4711bcfc18b980ed3ca6f4d6fb256
         imagePullPolicy: Always
         resources:
           requests:
@@ -635,7 +636,7 @@ spec:
       initContainers:
       - name: volume-mount-permissions
         image: busybox
-        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images"]
+        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images /"]
         volumeMounts:
         - name: nier-images-pv
           mountPath: /var/www/html/images

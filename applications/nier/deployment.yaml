@@ -636,7 +636,7 @@ spec:
       initContainers:
       - name: volume-mount-permissions
         image: busybox
-        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images /"]
+        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html/images"]
         volumeMounts:
         - name: nier-images-pv
           mountPath: /var/www/html/images

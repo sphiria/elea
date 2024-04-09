@@ -182,6 +182,7 @@ data:
     $wgDefaultSkin = "vector";
     wfLoadSkin('Vector');
     wfLoadSkin('Timeless');
+    $wgAllowSiteCSSOnRestrictedPages = true;
 
     # Article size
     $wgMaxArticleSize = 8192;

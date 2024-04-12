@@ -51,7 +51,7 @@ data:
 
     # assets
     $wgLogo = "$wgScriptPath/images/1/18/Vyrnball.png";
-    $wgFavicon = "$wgScriptPath/images/favicon.ico";
+    $wgFavicon = "$wgScriptPath/favicon.ico";
 
     # Email
     $wgEnableEmail = true;
@@ -558,7 +558,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:4db8608d18cc1d3a6d6550eac9db7ceabffafde5
+        image: ghcr.io/sphiria/yuisis:1548279a817b0f1de7a06dc91fc6ac4d24a2f198
         imagePullPolicy: Always
         resources:
           requests:

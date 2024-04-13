@@ -219,6 +219,7 @@ data:
     $wgDefaultUserOptions['usecodemirror'] = true;
 
     wfLoadExtension('PageImages');
+    $wgPageImagesOpenGraph = false;
 
     wfLoadExtension('VipsScaler');
 

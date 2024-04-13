@@ -218,6 +218,8 @@ data:
     wfLoadExtension('CodeMirror');
     $wgDefaultUserOptions['usecodemirror'] = true;
 
+    wfLoadExtension('PageImages');
+
     wfLoadExtension('VipsScaler');
 
     # Captcha
@@ -559,7 +561,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:e22820d30fc793eb011f6dd20b3045997c9f565f
+        image: ghcr.io/sphiria/yuisis:9bcc48b9b30df4f410aa37456ec5baa409cccbaa
         imagePullPolicy: Always
         resources:
           requests:

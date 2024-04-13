@@ -347,6 +347,8 @@ data:
 
     # better descriptions
     wfLoadExtension('WikiSEO');
+    $wgWikiSeoOverwritePageImage = true;
+    $wgWikiSeoDisableLogoFallbackImage = true;
 
     # CheckUser
     wfLoadExtension('CheckUser');

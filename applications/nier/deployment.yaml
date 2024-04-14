@@ -324,7 +324,7 @@ data:
     define("NS_DATA", 10000);
     define("NS_DATA_TALK", 10001);
 
-    // Add namespaces.
+    # add namespaces
     $wgExtraNamespaces[NS_RAIDS] = "Raids";
     $wgExtraNamespaces[NS_RAIDS_TALK] = "Raids_talk";
     $wgExtraNamespaces[NS_META] = "Meta";
@@ -342,7 +342,7 @@ data:
     $wgExtraNamespaces[NS_DATA] = "Data";
     $wgExtraNamespaces[NS_DATA_TALK] = "Data_talk";
 
-    # Enable subpages in other namespaces
+    # enable subpages in other namespaces
     $wgNamespacesWithSubpages[NS_META] = true;
 
     # better descriptions
@@ -502,7 +502,7 @@ data:
     #$wgExtraNamespaces[2600] = 'Topic';
     #$wgContentHandlers["flow-board"] = $wgContentHandlers["wikitext"];
 
-    // permissions
+    # permissions
     $wgGroupPermissions['editors']['editprotected'] = true;
     $wgGroupPermissions['editors']['editinterface'] = true;
     $wgGroupPermissions['sysop']['deletelogentry'] = true;
@@ -541,6 +541,12 @@ data:
 
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );
+    # pls fix this in the future, this is icky
+    $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';
+    $wgDebugLogGroups = array(
+      'exception' => '/var/log/nginx/wiki-exception.log',
+      'resourceloader' => '/var/log/nginx/wiki-resourceloader.log',
+    );
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -563,7 +569,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:97bb615a72f73bbf014ddc52e09085e6a3ed4edf
+        image: ghcr.io/sphiria/yuisis:dcde0a92c21e408ec53552148a357d7711133b9c
         imagePullPolicy: Always
         resources:
           requests:
@@ -679,7 +685,7 @@ kind: Ingress
 metadata:
   name: gbfwiki-ingress
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 11m
+    nginx.ingress.kubernetes.io/proxy-body-size: 15m
     nginx.ingress.kubernetes.io/forwarded-for-header: "CF-Connecting-IP"
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/compute-full-forwarded-for: "true"

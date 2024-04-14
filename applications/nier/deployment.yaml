@@ -167,7 +167,6 @@ data:
       '2400:cb00::/32',
       '2606:4700::/32',
       '2803:f800::/32',
-      '2405:b500::/32',
       '2405:8100::/32',
       '2a06:98c0::/29',
       '2c0f:f248::/32',
@@ -564,7 +563,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:9bcc48b9b30df4f410aa37456ec5baa409cccbaa
+        image: ghcr.io/sphiria/yuisis:97bb615a72f73bbf014ddc52e09085e6a3ed4edf
         imagePullPolicy: Always
         resources:
           requests:

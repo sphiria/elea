@@ -100,7 +100,6 @@ data:
     $wgMaxImageArea = 10e7;
     $wgMaxShellFileSize = 402400;
     $wgMaxShellMemory = 607200;
-    $wgShowEXIF = false;
 
     # Remove export page
     function removeExportSpecial(&$aSpecialPages)
@@ -570,7 +569,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:dcde0a92c21e408ec53552148a357d7711133b9c
+        image: ghcr.io/sphiria/yuisis:a0e83b5bfc68d24a21b42ebc747752f3e77f572e
         imagePullPolicy: Always
         resources:
           requests:

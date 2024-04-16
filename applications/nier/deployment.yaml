@@ -447,7 +447,7 @@ data:
     # ElasticSearch
     wfLoadExtension('Elastica');
     wfLoadExtension('CirrusSearch');
-    $wgSearchType = 'CirrusSearch';
+    #$wgSearchType = 'CirrusSearch';
     $wgCirrusSearchServers = [ getenv('ES_HOST') ];
     $wgCirrusSearchUseCompletionSuggester = 'yes';
     $wgCirrusSearchCompletionSuggesterSubphrases = [

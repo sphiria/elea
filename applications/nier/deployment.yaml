@@ -300,50 +300,47 @@ data:
     $wgScribuntoEngineConf['luasandbox']['errorFile'] = '/var/log/luasandbox.log';
     $wgScribuntoUseCodeEditor = true;
     $wgScribuntoUseGeSHi = true;
+
     # VariablesLua
     wfLoadExtension('VariablesLua');
 
     # template sandbox
     wfLoadExtension('TemplateSandbox');
 
-    // Define constants for additional namespaces.
-    define("NS_RAIDS", 3000);
-    define("NS_RAIDS_TALK", 3001);
-    define("NS_META", 4000);
-    define("NS_META_TALK", 4001);
-    define("NS_SCENARIO", 5000);
-    define("NS_SCENARIO_TALK", 5001);
-    define("NS_NEWS", 6000);
-    define("NS_NEWS_TALK", 6001);
-    define("NS_ENEMIES", 7000);
-    define("NS_ENEMIES_TALK", 7001);
-    define("NS_SKILLS", 8000);
-    define("NS_SKILLS_TALK", 8001);
-    define("NS_TROPHIES", 9000);
-    define("NS_TROPHIES_TALK", 9001);
-    define("NS_DATA", 10000);
-    define("NS_DATA_TALK", 10001);
-
     # add namespaces
+    define("NS_RAIDS", 3000);
     $wgExtraNamespaces[NS_RAIDS] = "Raids";
+    define("NS_RAIDS_TALK", 3001);
     $wgExtraNamespaces[NS_RAIDS_TALK] = "Raids_talk";
+    define("NS_META", 4000);
     $wgExtraNamespaces[NS_META] = "Meta";
-    $wgExtraNamespaces[NS_META_TALK] = "Meta_talk";
-    $wgExtraNamespaces[NS_SCENARIO] = "Scenario";
-    $wgExtraNamespaces[NS_SCENARIO_TALK] = "Scenario_talk";
-    $wgExtraNamespaces[NS_NEWS] = "News";
-    $wgExtraNamespaces[NS_NEWS_TALK] = "News_talk";
-    $wgExtraNamespaces[NS_ENEMIES] = "Enemies";
-    $wgExtraNamespaces[NS_ENEMIES_TALK] = "Enemies_talk";
-    $wgExtraNamespaces[NS_SKILLS] = "Skills";
-    $wgExtraNamespaces[NS_SKILLS_TALK] = "Skills_talk";
-    $wgExtraNamespaces[NS_TROPHIES] = "Trophies";
-    $wgExtraNamespaces[NS_TROPHIES_TALK] = "Trophies_talk";
-    $wgExtraNamespaces[NS_DATA] = "Data";
-    $wgExtraNamespaces[NS_DATA_TALK] = "Data_talk";
-
-    # enable subpages in other namespaces
     $wgNamespacesWithSubpages[NS_META] = true;
+    define("NS_META_TALK", 4001);
+    $wgExtraNamespaces[NS_META_TALK] = "Meta_talk";
+    define("NS_SCENARIO", 5000);
+    $wgExtraNamespaces[NS_SCENARIO] = "Scenario";
+    define("NS_SCENARIO_TALK", 5001);
+    $wgExtraNamespaces[NS_SCENARIO_TALK] = "Scenario_talk";
+    define("NS_NEWS", 6000);
+    $wgExtraNamespaces[NS_NEWS] = "News";
+    define("NS_NEWS_TALK", 6001);
+    $wgExtraNamespaces[NS_NEWS_TALK] = "News_talk";
+    define("NS_ENEMIES", 7000);
+    $wgExtraNamespaces[NS_ENEMIES] = "Enemies";
+    define("NS_ENEMIES_TALK", 7001);
+    $wgExtraNamespaces[NS_ENEMIES_TALK] = "Enemies_talk";
+    define("NS_SKILLS", 8000);
+    $wgExtraNamespaces[NS_SKILLS] = "Skills";
+    define("NS_SKILLS_TALK", 8001);
+    $wgExtraNamespaces[NS_SKILLS_TALK] = "Skills_talk";
+    define("NS_TROPHIES", 9000);
+    $wgExtraNamespaces[NS_TROPHIES] = "Trophies";
+    define("NS_TROPHIES_TALK", 9001);
+    $wgExtraNamespaces[NS_TROPHIES_TALK] = "Trophies_talk";
+    define("NS_DATA", 10000);
+    $wgExtraNamespaces[NS_DATA] = "Data";
+    define("NS_DATA_TALK", 10001);
+    $wgExtraNamespaces[NS_DATA_TALK] = "Data_talk";
 
     # better descriptions
     wfLoadExtension('WikiSEO');
@@ -356,10 +353,10 @@ data:
     $wgGroupPermissions['sysop']['checkuser-log'] = true;
     $wgGroupPermissions['sysop']['hideuser'] = true;
 
-    // Widgets
+    # Widgets
     wfLoadExtension('Widgets');
 
-    // CLDR
+    # CLDR
     wfLoadExtension('cldr');
 
     # Linter
@@ -538,6 +535,10 @@ data:
     $wgGroupPermissions['sysop']['deletelogentry'] = true;
     $wgGroupPermissions['sysop']['deleterevision'] = true;
     $wgGroupPermissions['autopatrolled']['autopatrol'] = true;
+    # restrict module namespaces
+    $wgGroupPermissions['moduleeditor']['editmodules'] = true;
+    $wgGroupPermissions['sysop']['editmodules'] = true;
+    $wgNamespaceProtection[828] = ['editmodules'];
 
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );

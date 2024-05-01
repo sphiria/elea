@@ -30,7 +30,7 @@ data:
     $wgMaxUploadSize = 10485760;
 
     # url
-    $wgServer = "//gbf.wiki";
+    $wgServer = "https://gbf.wiki";
     $wgScriptPath = "";
     $wgScriptExtension = "$wgScriptPath/index.php";
     $wgRedirectScript = "$wgScriptPath/redirect.php";

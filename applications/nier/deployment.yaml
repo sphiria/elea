@@ -6,7 +6,7 @@ metadata:
     app: nier
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 50G
@@ -571,7 +571,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:cace192dd7341cabd684a04d831a63a508b01f37
+        image: ghcr.io/sphiria/yuisis:fd6ee7459d56a3a26d8976d4ac726f55aec342df
         imagePullPolicy: Always
         resources:
           requests:
@@ -586,6 +586,9 @@ spec:
           - name: nier-config-volume
             mountPath: /var/www/html/LocalSettings.php
             subPath: LocalSettings.php
+          - name: nier-vector-config-volume
+            mountPath: /opt/vector/vector.toml
+            subPath: vector.toml
           - name: nier-images-pv
             mountPath: /var/www/html/images
         env:
@@ -665,6 +668,9 @@ spec:
       - name: nier-config-volume
         configMap:
           name: nier-config
+      - name: nier-vector-config-volume
+        configMap:
+          name: nier-vector-config
       - name: nier-images-pv
         persistentVolumeClaim:
           claimName: nier-images-pv-claim

@@ -4,14 +4,14 @@ metadata:
   name: nier-assets-volume
 spec:
   capacity:
-    storage: 8Gi
+    storage: 50Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: "/mnt/nier-assets"
+    path: "/srv/nier-assets"
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -628,7 +628,7 @@ spec:
           - name: nier-images-pv
             mountPath: /var/www/html/images
           - name: nier-assets-volume
-            mountPath: /opt/images
+            mountPath: /mnt/images
         env:
         - name: EMAIL
           valueFrom:

@@ -12,6 +12,14 @@ spec:
   storageClassName: local-storage
   local:
     path: "/mnt/nier-assets"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - elea-agent-beatrix-iec
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -35,7 +43,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
   resources:
     requests:
       storage: 50G

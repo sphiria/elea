@@ -6,7 +6,7 @@ metadata:
     app: nier
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 50G

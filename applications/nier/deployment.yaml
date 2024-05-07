@@ -1,4 +1,32 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nier-assets-volume
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: "/mnt/nier-assets"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nier-assets-volume-claim
+spec:
+  volumeName: nier-assets-volume
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nier-images-pv-claim
@@ -592,6 +620,8 @@ spec:
             subPath: vector.toml
           - name: nier-images-pv
             mountPath: /var/www/html/images
+          - name: nier-assets-volume
+            mountPath: /opt/images
         env:
         - name: EMAIL
           valueFrom:
@@ -658,13 +688,6 @@ spec:
             secretKeyRef:
               name: nier-secrets
               key: cloudflare-api-token
-      initContainers:
-      - name: volume-mount-permissions
-        image: busybox
-        command: ["sh", "-c", "chown -R nobody:nobody /var/www/html"]
-        volumeMounts:
-        - name: nier-images-pv
-          mountPath: /var/www/html/images
       volumes:
       - name: nier-config-volume
         configMap:
@@ -675,6 +698,9 @@ spec:
       - name: nier-images-pv
         persistentVolumeClaim:
           claimName: nier-images-pv-claim
+      - name: nier-assets-volume
+        persistentVolumeClaim:
+          claimName: nier-assets-volume-claim
 ---
 apiVersion: v1
 kind: Service

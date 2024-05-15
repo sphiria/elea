@@ -585,6 +585,9 @@ data:
       'CirrusSearch' => '/var/log/nginx/wiki-cirrussearch.log',
       'resourceloader' => '/var/log/nginx/wiki-resourceloader.log',
     );
+    $wgStatsFormat = "statsd";
+    $wgStatsTarget = "udp://127.0.0.1:8125";
+
 ---
 apiVersion: apps/v1
 kind: Deployment

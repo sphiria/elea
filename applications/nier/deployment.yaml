@@ -586,7 +586,7 @@ data:
       'resourceloader' => '/var/log/nginx/wiki-resourceloader.log',
     );
     $wgStatsFormat = "statsd";
-    $wgStatsTarget = "udp://127.0.0.1:8125";
+    $wgStatsTarget = "udp://danua-service:9125";
 
 ---
 apiVersion: apps/v1

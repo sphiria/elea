@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: danua-service
+spec:
+  type: ClusterIP
+  selector:
+    app: danua
+  ports:
+    - protocol: TCP
+      name: "port1"
+      port: 9102
+      targetPort: 9102
+    - protocol: TCP
+      name: "port2"
+      port: 9125
+      targetPort: 9125
+    - protocol: UDP
+      name: "port3"
+      port: 9125
+      targetPort: 9125
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: danua
+  labels:
+    app: statsd_exporter
+spec:
+  selector:
+    matchLabels:
+      app: danua
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: danua
+    spec:
+      containers:
+      - name: danua
+        image: prom/statsd-exporter:v0.26.1

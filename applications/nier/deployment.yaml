@@ -86,9 +86,11 @@ data:
     $wgForceHTTPS = true;
 
     # assets
-    $wgLogo = "$wgScriptPath/images/1/18/Vyrnball.png";
+    $wgLogos = [
+      '1x' => "$wgScriptPath/images/1/18/Vyrnball.png",
+      'icon' => "$wgScriptPath/images/8/88/Gbfwiki_icon.png",
+    ];
     $wgFavicon = "$wgScriptPath/favicon.ico";
-
     # Email
     $wgEnableEmail = true;
     $wgEnableUserEmail = false; # UPO
@@ -578,7 +580,7 @@ data:
 
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );
-    # pls fix this in the future, this is icky
+    # replace this with the nicer log provider
     $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';
     $wgDebugLogGroups = array(
       'exception' => '/var/log/nginx/wiki-exception.log',

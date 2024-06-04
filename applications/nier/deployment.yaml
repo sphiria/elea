@@ -584,8 +584,6 @@ data:
     $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';
     $wgDebugLogGroups = array(
       'exception' => '/var/log/nginx/wiki-exception.log',
-      'CirrusSearch' => '/var/log/nginx/wiki-cirrussearch.log',
-      'resourceloader' => '/var/log/nginx/wiki-resourceloader.log',
     );
     $wgStatsFormat = "statsd";
     $wgStatsTarget = "udp://danua-service:9125";

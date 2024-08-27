@@ -62,11 +62,13 @@ data:
     $wgSitename = "Granblue Fantasy Wiki";
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
-    # upload size
+    # uploads
     $wgMaxUploadSize = 10485760;
+    $wgUploadDirectory = "/mnt/images";
 
     # url
     $wgServer = "https://gbf.wiki";
+    $wgUploadPath = "https://gbf.wiki/images";
     $wgScriptPath = "";
     $wgScriptExtension = "$wgScriptPath/index.php";
     $wgRedirectScript = "$wgScriptPath/redirect.php";

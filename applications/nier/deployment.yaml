@@ -140,6 +140,7 @@ data:
     $wgMaxImageArea = 10e7;
     $wgMaxShellFileSize = 402400;
     $wgMaxShellMemory = 607200;
+    $wgNativeImageLazyLoading = true;
 
     # Remove export page
     function removeExportSpecial(&$aSpecialPages)

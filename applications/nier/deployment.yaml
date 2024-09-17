@@ -499,7 +499,7 @@ data:
     ];
 
     # CollapsibleVector
-    wfLoadExtension('CollapsibleVector');
+    # wfLoadExtension('CollapsibleVector');
 
     # EmbedVideo
     wfLoadExtension("EmbedVideo");

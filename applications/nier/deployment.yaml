@@ -512,6 +512,11 @@ data:
 
     # templatestyles
     wfLoadExtension('TemplateStyles');
+    $wgTemplateStylesAllowedUrls = [
+      "image" => [
+          "<^https://gbf\\.wiki/images/>"
+      ],
+    ];
 
     # cloudflare
     wfLoadExtension('MultiPurge');

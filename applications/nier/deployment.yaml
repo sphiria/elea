@@ -473,6 +473,9 @@ data:
     # SimpleMathJax
     wfLoadExtension('SimpleMathJax');
 
+    # RegexFunctions
+    wfLoadExtension('RegexFunctions');
+
     # VisualEditor
     wfLoadExtension('VisualEditor');
     # $wgDefaultUserOptions['visualeditor-enable'] = 1;
@@ -618,7 +621,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:da89a0fafa899d6a85516c9d9cccdb709ac20150
+        image: ghcr.io/sphiria/yuisis:44d9531e3cb329024703066e0fca941e8848e989
         imagePullPolicy: Always
         resources:
           requests:

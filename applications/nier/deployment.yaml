@@ -264,14 +264,9 @@ data:
     wfLoadExtension('VipsScaler');
 
     # Captcha
-    wfLoadExtensions(['ConfirmEdit', 'ConfirmEdit/QuestyCaptcha']);
-    $wgCaptchaClass = 'QuestyCaptcha';
-    $arr = array(
-        "What's the female main character called? D__e_a" => array('Djeeta', 'DJEETA', 'gita'),
-    );
-    foreach ($arr as $key => $value) {
-        $wgCaptchaQuestions[] = array('question' => $key, 'answer' => $value);
-    }
+    wfLoadExtensions([ 'ConfirmEdit', 'ConfirmEdit/Turnstile' ]);
+    $wgTurnstileSiteKey = getenv('TURNSTILE_SITE_KEY');
+    $wgTurnstileSecretKey = getenv('TURNSTILE_SECRET_KEY');
     $wgGroupPermissions['bot']['skipcaptcha'] = true; // registered bots
     $wgGroupPermissions['sysop']['skipcaptcha'] = true;
     $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
@@ -705,6 +700,16 @@ spec:
               name: nier-secrets
               key: cloudflare-zone-id
         - name: CLOUDFLARE_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: cloudflare-api-token
+        - name: TURNSTILE_SITE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: nier-secrets
+              key: turnstile-site-key
+        - name: TURNSTILE_SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: nier-secrets

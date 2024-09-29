@@ -713,7 +713,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: nier-secrets
-              key: cloudflare-api-token
+              key: turnstile-secret-key
       volumes:
       - name: nier-config-volume
         configMap:

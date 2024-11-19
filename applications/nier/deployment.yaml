@@ -587,6 +587,8 @@ data:
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );
     wfLoadExtension( 'OAuth' );
+    $wgGroupPermissions['sysop']['mwoauthproposeconsumer'] = true;
+    $wgGroupPermissions['editors']['mwoauthproposeconsumer'] = true;
 
     # replace this with the nicer log provider
     $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';

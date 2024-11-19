@@ -586,6 +586,8 @@ data:
 
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );
+    wfLoadExtension( 'OAuth' );
+
     # replace this with the nicer log provider
     $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';
     $wgDebugLogGroups = array(

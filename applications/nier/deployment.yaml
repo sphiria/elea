@@ -596,8 +596,6 @@ data:
     $wgDebugLogGroups = array(
       'exception' => '/var/log/nginx/wiki-exception.log',
     );
-    $wgStatsFormat = "statsd";
-    $wgStatsTarget = "udp://danua-service:9125";
 
 ---
 apiVersion: apps/v1
@@ -621,7 +619,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:ba3772040faa88bc267a1ca9eb31952ebb330b48
+        image: ghcr.io/sphiria/yuisis:v1.0.0
         imagePullPolicy: Always
         resources:
           requests:

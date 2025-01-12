@@ -62,6 +62,8 @@ data:
     $wgSitename = "Granblue Fantasy Wiki";
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
+    $wgRememberMe = "always";
+
     # uploads
     $wgMaxUploadSize = 10485760;
     $wgUploadDirectory = "/mnt/images";

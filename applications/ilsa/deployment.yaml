@@ -520,6 +520,8 @@ data:
     #$wgCirrusSearchUseIcuFolding = true;
     #$wgCirrusSearchWikimediaExtraPlugin['id_hash_mod_filter'] = true;
     #$wgCirrusSearchWikimediaExtraPlugin['super_detect_noop'] = true;
+    # SimpleBatchUpload
+    wfLoadExtension( 'SimpleBatchUpload' );
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -542,7 +544,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: ilsa
-        image: ghcr.io/sphiria/yuisis:v1.0.1
+        image: ghcr.io/sphiria/yuisis:v1.0.2
         imagePullPolicy: Always
         resources:
           requests:

@@ -463,40 +463,40 @@ data:
     wfLoadExtension('Linter');
 
     # UploadWizard
-    wfLoadExtension('UploadWizard');
-    $wgUploadNavigationUrl = '/Special:UploadWizard';
-    $wgUploadWizardConfig = array(
-        'debug' => false,
-        'altUploadForm' => 'Special:Upload',
-        'fallbackToAltUploadForm' => false,
-        'alternativeUploadToolsPage' => false,
-        'enableFormData' => true,
-        'enableMultipleFiles' => true,
-        'enableMultiFileSelect' => false,
-        'enableCategoryCheck' => false,
-        'minAuthorLength' => 0,
-        'minSourceLength' => 0,
-        'minDescriptionLength' => 0,
-        'minCaptionLength' => 0,
-        'minTitleLength' => 1,
-        'tutorial' => array(
-            'skip' => true
-        ),
-        'uwLanguages' => [
-            'en' => 'English'
-            ],
-        'maxUploads' => 50,
-        'licensing' => [
-            'ownWorkDefault' => 'own',
-            'ownWork' => [
-                'type' => 'or',
-                'template' => 'licensing',
-                'licenses' => [
-                    'generic',
-                ],
-            ],
-        ],
-    );
+    #wfLoadExtension('UploadWizard');
+    #$wgUploadNavigationUrl = '/Special:UploadWizard';
+    #$wgUploadWizardConfig = array(
+    #    'debug' => false,
+    #    'altUploadForm' => 'Special:Upload',
+    #    'fallbackToAltUploadForm' => false,
+    #    'alternativeUploadToolsPage' => false,
+    #     'enableFormData' => true,
+    #     'enableMultipleFiles' => true,
+    #     'enableMultiFileSelect' => false,
+    #     'enableCategoryCheck' => false,
+    #     'minAuthorLength' => 0,
+    #     'minSourceLength' => 0,
+    #     'minDescriptionLength' => 0,
+    #     'minCaptionLength' => 0,
+    #     'minTitleLength' => 1,
+    #     'tutorial' => array(
+    #         'skip' => true
+    #     ),
+    #     'uwLanguages' => [
+    #         'en' => 'English'
+    #         ],
+    #     'maxUploads' => 50,
+    #     'licensing' => [
+    #         'ownWorkDefault' => 'own',
+    #         'ownWork' => [
+    #             'type' => 'or',
+    #             'template' => 'licensing',
+    #             'licenses' => [
+    #                 'generic',
+    #             ],
+    #         ],
+    #     ],
+    # );
     # Variables - 3rd party extension
     wfLoadExtension('Variables');
 
@@ -542,7 +542,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: ilsa
-        image: ghcr.io/sphiria/yuisis:3cb2b8500fafaa366f4e2cf6ad0f3d2ce070e2f2
+        image: ghcr.io/sphiria/yuisis:v1.0.1
         imagePullPolicy: Always
         resources:
           requests:

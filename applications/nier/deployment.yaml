@@ -62,6 +62,7 @@ data:
     $wgSitename = "Granblue Fantasy Wiki";
     $wgMetaNamespace = "Granblue_Fantasy_Wiki";
 
+    $wgMemoryLimit = '1400M';
     $wgRememberMe = "always";
 
     # uploads
@@ -237,6 +238,7 @@ data:
 
     # Article size
     $wgMaxArticleSize = 8192;
+    $wgAPIMaxResultSize = $wgMaxArticleSize * 4096;
 
     # Extensions
     wfLoadExtension('Cite');
@@ -336,6 +338,7 @@ data:
     wfLoadExtension('Scribunto');
     $wgScribuntoDefaultEngine = 'luasandbox';
     $wgScribuntoEngineConf['luasandbox']['errorFile'] = '/var/log/luasandbox.log';
+    $wgScribuntoEngineConf['luasandbox']['memoryLimit'] = 524288000;
     $wgScribuntoUseCodeEditor = true;
     $wgScribuntoUseGeSHi = true;
 
@@ -588,15 +591,17 @@ data:
 
     wfLoadExtension( 'DarkMode' );
     wfLoadExtension( 'RandomSelection' );
-    wfLoadExtension( 'OAuth' );
-    $wgGroupPermissions['user']['mwoauthproposeconsumer'] = true;
-    $wgGroupPermissions['sysop']['mwoauthviewprivate'] = true;
-    $wgGroupPermissions['sysop']['mwoauthupdateownconsumer'] = true;
+    #wfLoadExtension( 'OAuth' );
+    #$wgGroupPermissions['user']['mwoauthproposeconsumer'] = true;
+    #$wgGroupPermissions['sysop']['mwoauthviewprivate'] = true;
+    #$wgGroupPermissions['sysop']['mwoauthupdateownconsumer'] = true;
 
     # replace this with the nicer log provider
     $wgDBerrorLog = '/var/log/nginx/wiki-dberror.log';
     $wgDebugLogGroups = array(
       'exception' => '/var/log/nginx/wiki-exception.log',
+      'cargo' => '/var/log/nginx/wiki-cargo.log',
+      #'cargo-detailed' => '/var/log/nginx/wiki-cargo-detailed.log',
     );
 
 ---

@@ -229,6 +229,10 @@ data:
 
     # Path to the GNU diff3 utility. Used for conflict resolution.
     $wgDiff3 = "/usr/bin/diff3";
+    $diff2Enabled = extension_loaded( 'wikidiff2' );
+    if ( $diff2Enabled ) {
+      $wgDiffEngine = 'wikidiff2';
+    }
 
     # Default skin
     $wgDefaultSkin = "vector";
@@ -601,7 +605,7 @@ data:
     $wgDebugLogGroups = array(
       'exception' => '/var/log/nginx/wiki-exception.log',
       'cargo' => '/var/log/nginx/wiki-cargo.log',
-      #'cargo-detailed' => '/var/log/nginx/wiki-cargo-detailed.log',
+      'cargo-detailed' => '/var/log/nginx/wiki-cargo-detailed.log',
     );
 
 ---
@@ -626,7 +630,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:v1.0.4
+        image: ghcr.io/sphiria/yuisis:v1.0.5
         imagePullPolicy: Always
         resources:
           requests:

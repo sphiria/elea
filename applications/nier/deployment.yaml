@@ -343,6 +343,7 @@ data:
     $wgScribuntoDefaultEngine = 'luasandbox';
     $wgScribuntoEngineConf['luasandbox']['errorFile'] = '/var/log/luasandbox.log';
     $wgScribuntoEngineConf['luasandbox']['memoryLimit'] = 524288000;
+    $wgScribuntoGatherFunctionStats = true;
     $wgScribuntoUseCodeEditor = true;
     $wgScribuntoUseGeSHi = true;
 
@@ -630,7 +631,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:v1.0.5
+        image: ghcr.io/sphiria/yuisis:v1.0.7
         imagePullPolicy: Always
         resources:
           requests:

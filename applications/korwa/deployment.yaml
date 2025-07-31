@@ -30,3 +30,13 @@ spec:
       containers:
       - name: korwa
         image: redis:7.2.4-alpine
+        resources:
+          limits:
+            memory: "5Gi"
+            cpu: "2000m"
+          requests:
+            memory: "2Gi"
+            cpu: "100m"
+        env:
+        - name: REDIS_ARGS
+          value: "--maxmemory 5gb --maxmemory-policy allkeys-lru"

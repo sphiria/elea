@@ -547,8 +547,12 @@ spec:
         image: ghcr.io/sphiria/yuisis:v1.0.3
         imagePullPolicy: Always
         resources:
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
           requests:
             memory: "2Gi"
+            cpu: "100m"
         ports:
           - containerPort: 8080
         volumeMounts:

@@ -313,6 +313,7 @@ data:
 
     # TabberNeue
     wfLoadExtension('TabberNeue');
+    $wgTabberNeueParseTabName = true;
 
     # Purge
     $wgGroupPermissions['user']['purge'] = false;
@@ -634,8 +635,12 @@ spec:
         image: ghcr.io/sphiria/yuisis:v1.0.9
         imagePullPolicy: Always
         resources:
+          limits:
+            memory: "10Gi"
+            cpu: "10850m"
           requests:
             memory: "10Gi"
+            cpu: "5850m"
         ports:
           - containerPort: 8080
         lifecycle:

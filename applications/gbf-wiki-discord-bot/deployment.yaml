@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gbf-wiki-discord-bot-config
+data:
+  DRY_RUN: "false"
+  ALLOWED_ROLES: "Wiki Editor,Wiki Admin,Wiki Discord Moderator,Verified Editor"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gbf-wiki-discord-bot
+  labels:
+    app: gbf-wiki-discord-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gbf-wiki-discord-bot
+  template:
+    metadata:
+      labels:
+        app: gbf-wiki-discord-bot
+    spec:
+      containers:
+      - name: gbf-wiki-discord-bot
+        image: ghcr.io/sphiria/gbf-wiki-image-uploader-discord-bot:29de3f5
+        imagePullPolicy: Always
+        
+        envFrom:
+        - secretRef:
+            name: gbf-wiki-discord-bot-secrets
+        - configMapRef:
+            name: gbf-wiki-discord-bot-config
+        
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        
+        livenessProbe:
+          exec:
+            command:
+            - python
+            - -c
+            - "import sys; sys.exit(0)"
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 10
+          failureThreshold: 3
+        
+        readinessProbe:
+          exec:
+            command:
+            - python
+            - -c
+            - "import sys; sys.exit(0)"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+      
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      
+      restartPolicy: Always

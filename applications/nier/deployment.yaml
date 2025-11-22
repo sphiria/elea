@@ -266,8 +266,8 @@ data:
     wfLoadExtension('CodeMirror');
     $wgDefaultUserOptions['usecodemirror'] = true;
 
-    # wfLoadExtension('PageImages');
-    # $wgPageImagesOpenGraph = false;
+    wfLoadExtension('PageImages');
+    $wgPageImagesOpenGraph = false;
 
     wfLoadExtension('VipsScaler');
 
@@ -609,6 +609,15 @@ data:
       'cargo' => '/var/log/nginx/wiki-cargo.log',
       'cargo-detailed' => '/var/log/nginx/wiki-cargo-detailed.log',
     );
+
+    # increase resource limits for specific Scribunto modules
+    $wgHooks['ScribuntoExternalLibraryPaths'][] = function(&$extraPaths) {
+        if (stripos(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10)[0]['args'][0] ?? '', 'CharacterTier') !== false) {
+            ini_set('max_execution_time', 60);
+            ini_set('memory_limit', '2048M');
+        }
+        return true;
+    };
 
 ---
 apiVersion: apps/v1

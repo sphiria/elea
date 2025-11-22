@@ -266,15 +266,8 @@ data:
     wfLoadExtension('CodeMirror');
     $wgDefaultUserOptions['usecodemirror'] = true;
 
-    wfLoadExtension('PageImages');
-    $wgPageImagesOpenGraph = false;
-    $wgHooks['ParserFirstCallInit'][] = function($parser) {
-      if (strpos($_SERVER['REQUEST_URI'] ?? '', 'Character_Tier_List') !== false) {
-          global $wgPageImagesEnabled;
-          $wgPageImagesEnabled = false;
-      }
-      return true;
-    };
+    # wfLoadExtension('PageImages');
+    # $wgPageImagesOpenGraph = false;
 
     wfLoadExtension('VipsScaler');
 

@@ -610,14 +610,7 @@ data:
       'cargo-detailed' => '/var/log/nginx/wiki-cargo-detailed.log',
     );
 
-    # increase resource limits for specific Scribunto modules
-    $wgHooks['ScribuntoExternalLibraryPaths'][] = function(&$extraPaths) {
-        if (stripos(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10)[0]['args'][0] ?? '', 'CharacterTier') !== false) {
-            ini_set('max_execution_time', 60);
-            ini_set('memory_limit', '2048M');
-        }
-        return true;
-    };
+    # wfLoadExtension( 'ParserMigration' );
 
 ---
 apiVersion: apps/v1
@@ -641,7 +634,7 @@ spec:
       - name: dockerconfigjson-github-com
       containers:
       - name: nier
-        image: ghcr.io/sphiria/yuisis:v1.0.9
+        image: ghcr.io/sphiria/yuisis:v1.1.0
         imagePullPolicy: Always
         resources:
           limits:

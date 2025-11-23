@@ -612,6 +612,13 @@ data:
 
     wfLoadExtension( 'ParserMigration' );
 
+    $wgEnableUploads = false;
+    $wgGroupPermissions['autoconfirmed']['createpage'] = false;
+    $wgGroupPermissions['autoconfirmed']['createtalk'] = false;
+    $wgGroupPermissions['autoconfirmed']['writeapi'] = false;
+    $wgGroupPermissions['autoconfirmed']['move'] = false;
+    $wgGroupPermissions['autoconfirmed']['reupload'] = false;
+    $wgGroupPermissions['autoconfirmed']['upload'] = false;
 ---
 apiVersion: apps/v1
 kind: Deployment
